@@ -769,13 +769,14 @@
             var checks = document.querySelectorAll('.wk-check');
             var label  = document.getElementById('continue-payment-label');
             var btn    = document.getElementById('continue-payment-btn');
-            var redirectField = document.getElementById('redirect-url');
-            if (!checks.length || !label || !btn || !redirectField) return;
+            var form   = btn ? btn.closest('form') : null;
+            if (!checks.length || !label || !btn || !form) return;
 
             var BASE = 199, MULTI_DISCOUNT = 20;
             // Stripe Payment Links — chosen dynamically based on week count.
             var STRIPE_1_WEEK = 'https://buy.stripe.com/4gMdR9gSv8vlehvceC9Zm00';
             var STRIPE_2_WEEK = 'https://buy.stripe.com/3cI9ATeKn6nd0qF0vU9Zm01';
+            var stripeUrl = '';
 
             function update(){
               var n = 0;
@@ -785,18 +786,42 @@
                 btn.disabled = true;
                 btn.style.opacity = '0.55';
                 btn.style.cursor = 'not-allowed';
-                redirectField.value = '';
+                stripeUrl = '';
               } else {
                 var total = n * BASE - (n >= 2 ? MULTI_DISCOUNT : 0);
                 label.textContent = 'Total $' + total + ' — Continue to Payment';
                 btn.disabled = false;
                 btn.style.opacity = '';
                 btn.style.cursor = '';
-                redirectField.value = (n === 1) ? STRIPE_1_WEEK : STRIPE_2_WEEK;
+                stripeUrl = (n === 1) ? STRIPE_1_WEEK : STRIPE_2_WEEK;
               }
             }
             checks.forEach(function(c){ c.addEventListener('change', update); });
             update();
+
+            // Submit the form via fetch (fire-and-forget) and redirect to Stripe ourselves.
+            // This bypasses Web3Forms' redirect-whitelist requirement.
+            form.addEventListener('submit', function(e){
+              if (!stripeUrl) {
+                e.preventDefault();
+                return;
+              }
+              e.preventDefault();
+              label.textContent = 'Processing…';
+              btn.disabled = true;
+              try {
+                fetch('https://api.web3forms.com/submit', {
+                  method: 'POST',
+                  body: new FormData(form),
+                  keepalive: true
+                }).catch(function(err){ console.error('Form submit error:', err); });
+              } catch (err) {
+                console.error('Form submit error:', err);
+              }
+              // Redirect immediately so the user lands on Stripe even if the
+              // fetch is still in flight (keepalive lets it finish in background).
+              window.location.href = stripeUrl;
+            });
           })();
         </script>
         <div class="submit-foot" >Discounts apply automatically on the next step. Spots only confirmed after payment.</div>
