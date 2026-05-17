@@ -397,7 +397,7 @@
     <div >
       <div class="crumb" ><span class="live"></span>Summer Camp 2026 · Now Enrolling</div>
       <div class="eyebrow-tag" >Building the Foundation for Future Mustangs</div>
-      <h1>Jr. Mustangs<br><span class="red">Feeder Basketball</span> Camp</h1>
+      <h1 style="font-size: 93px;">Jr. Mustangs<br><span class="red" style="font-size: 93px;">Feeder Basketball</span> Camp</h1>
       <div class="tagline" >Learn<span class="sep"></span>Compete<span class="sep"></span>Develop</div>
       <p class="lede" >Two weeks with the same coaches &amp; players who run the Mundelein varsity program.</p>
       <div class="cta-row" >
@@ -519,7 +519,7 @@
       </div>
     </div>
 
-    <div class="weeks" style="max-width: 720px; margin-left: auto; margin-right: auto;">
+    <div class="weeks" style="grid-template-columns: repeat(2, minmax(220px, 320px)); justify-content: center;">
       <div class="week-card" >
         <div class="wk-head" >
           <div class="wk-num" >Week<strong >01</strong></div>
@@ -1016,4 +1016,25 @@
     if (!toggle || !menu) return;
     var close = menu.querySelector('.mobile-menu-close');
     function open(){ menu.setAttribute('aria-hidden','false'); document.body.classList.add('menu-open'); }
-    function shut(){ menu.setAttribute('aria-hidden','true'); 
+    function shut(){ menu.setAttribute('aria-hidden','true'); document.body.classList.remove('menu-open'); }
+    toggle.addEventListener('click', open);
+    if (close) close.addEventListener('click', shut);
+    menu.querySelectorAll('.mobile-nav a').forEach(function(a){ a.addEventListener('click', shut); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') shut(); });
+  })();
+</script>
+
+<!-- ============ Mobile-only overrides (must come after main styles) ============ -->
+<style>
+  @media (max-width: 480px) {
+    .hero h1,
+    .hero h1 .red,
+    .hero h1 span { font-size: clamp(34px, 10vw, 46px) !important; line-height: 1 !important; letter-spacing: -0.02em !important; word-break: normal !important; }
+    .weeks { grid-template-columns: 1fr !important; justify-content: stretch !important; max-width: 100% !important; }
+    .pricing-card { grid-template-columns: 1fr !important; }
+    .pricing-left, .pricing-right { padding: 28px 22px !important; }
+  }
+</style>
+
+</body>
+</html>
