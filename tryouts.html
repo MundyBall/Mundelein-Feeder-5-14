@@ -409,13 +409,13 @@
       </div>
       <div class="stat">
         <div class="lab">Where</div>
-        <div class="val" style="">MHS<br>Main Gym</div>
-        <div class="sub">1350 W Hawley<br>St, Mundelein</div>
+        <div class="val" style="">MHS<br class="d-br"><span class="m-sp">&nbsp;</span>Main Gym</div>
+        <div class="sub">1350 W Hawley<br class="d-br"><span class="m-sp">&nbsp;</span>St, Mundelein</div>
       </div>
       <div class="stat">
         <div class="lab">Season Fee</div>
-        <div class="val" style="">$799 +<br>Jerseys</div>
-        <div class="sub">Only if your player<br>makes a team</div>
+        <div class="val" style="">$799 +<br class="d-br"><span class="m-sp">&nbsp;</span>Jerseys</div>
+        <div class="sub">Only if your player<br class="d-br"><span class="m-sp">&nbsp;</span>makes a team</div>
       </div>
     </div>
   </div>
@@ -1090,12 +1090,22 @@
 
 <!-- ============ Mobile-only overrides ============ -->
 <style>
-  @media (max-width: 480px) {
-    .section-lede { width: 100% !important; height: auto !important; }
-  }
+  /* Default (desktop): hide the mobile-only space-filler spans inside the stat strip */
+  .stat-strip .m-sp { display: none; }
 
   @media (max-width: 480px) {
-    body { padding-bottom: 96px !important; }
+    /* User: text on .section-lede shouldn't be locked to 800x60 on mobile */
+    .section-lede { width: 100% !important; height: auto !important; }
+
+    /* User: remove the floating Register button on mobile */
+    .sticky-register { display: none !important; }
+
+    /* User: each line in When / Where / Season Fee should be one line and centered */
+    .stat-strip .d-br { display: none !important; }
+    .stat-strip .m-sp { display: inline !important; }
+    .stat { text-align: center !important; }
+    .stat .val { white-space: nowrap !important; font-size: 22px !important; }
+    .stat .sub { white-space: nowrap !important; }
   }
 </style>
 
