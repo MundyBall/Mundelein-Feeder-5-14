@@ -494,4 +494,14 @@
   })();
 </script>
 
+
+<!-- ============ Mobile-only overrides ============ -->
+<style>
+  @media (max-width: 480px) {
+    .pipeline-track { grid-template-columns: 1fr !important; gap: 10px !important; }
+    .pipe-step.crown .age { white-space: normal !important; }
+    .pipe-step::after { display: none !important; }
+  }
+</style>
+
 </body></html>

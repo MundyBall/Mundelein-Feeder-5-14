@@ -1034,6 +1034,16 @@
     .pricing-card { grid-template-columns: 1fr !important; }
     .pricing-left, .pricing-right { padding: 28px 22px !important; }
   }
+
+  @media (max-width: 480px) {
+    .pricing-card { max-width: 100% !important; }
+    .pricing-card, .pricing-left, .pricing-right { overflow: hidden !important; }
+    .price-row { flex-wrap: wrap !important; gap: 4px !important; }
+    .price-row .val { font-size: 16px !important; }
+    .price-row .label-l { min-width: 0 !important; flex: 1 1 60% !important; }
+    .pricing-left h3 { font-size: 22px !important; }
+    .pricing-right .price-big { font-size: 52px !important; }
+  }
 </style>
 
 </body>
