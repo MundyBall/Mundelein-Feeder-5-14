@@ -794,11 +794,21 @@
             update();
 
             form.addEventListener('submit', function(e){
-              if (!stripeUrl) {
-                e.preventDefault();
+              e.preventDefault();
+
+              // Block if any selected week is sold out
+              var soldOut = false;
+              checks.forEach(function(c){
+                if (!c.checked) return;
+                var wk = c.dataset.week;
+                var cur = window._spotCounts && window._spotCounts[wk];
+                if (typeof cur === 'number' && cur <= 0) { soldOut = true; c.checked = false; update(); }
+              });
+              if (soldOut || !stripeUrl) {
+                if (soldOut) alert('Sorry — that week just sold out. Please update your selection.');
                 return;
               }
-              e.preventDefault();
+
               label.textContent = 'Processing…';
               btn.disabled = true;
 
@@ -1070,7 +1080,7 @@
       var text, cls;
       if (count <= 0) {
         text = 'Full'; cls = 'full';
-        if (checkbox) { checkbox.disabled = true; checkbox.checked = false; }
+        if (checkbox) { checkbox.disabled = true; checkbox.checked = false; checkbox.dispatchEvent(new Event('change')); }
       } else if (count <= 3) {
         text = count + (count === 1 ? ' spot left' : ' spots left'); cls = 'few';
         if (checkbox) checkbox.disabled = false;
