@@ -730,8 +730,8 @@
         <div class="form-section" >
           <div class="label" ><span class="step" >2</span>Pick Your Week(s)</div>
           <div class="week-pickers" >
-            <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week1" name="Week 1 — July 6–10"><span ><span class="lab" >Week 1 — July 6–10</span><br><span class="sub" >9:00 AM – 12:00 PM · $199</span></span></label>
-            <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week2" name="Week 2 — July 27–31"><span ><span class="lab" >Week 2 — July 27–31</span><br><span class="sub" >12:30 – 3:30 PM · $199</span></span></label>
+            <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week1" name="Week 1 — July 6–10"><span ><span class="lab" >Week 1 — July 6–10</span><br><span class="sub" >9:00 AM – 12:00 PM · $199</span><span class="form-spots" id="form-spots-week1"></span></span></label>
+            <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week2" name="Week 2 — July 27–31"><span ><span class="lab" >Week 2 — July 27–31</span><br><span class="sub" >12:30 – 3:30 PM · $199</span><span class="form-spots" id="form-spots-week2"></span></span></label>
           </div>
         </div>
 
@@ -1036,6 +1036,10 @@
   })();
 </script>
 
+<style>
+  .form-spots { font-weight: 700; font-size: 11px; color: var(--mustang-red); letter-spacing: 0.04em; }
+</style>
+
 <!-- ============ Mobile-only overrides (must come after main styles) ============ -->
 <style>
   @media (max-width: 480px) {
@@ -1066,23 +1070,22 @@
     function setAvail(weekKey, count) {
       window._spotCounts[weekKey] = count;
       var badge = document.getElementById('avail-' + weekKey);
+      var formSpot = document.getElementById('form-spots-' + weekKey);
       var checkbox = document.querySelector('.wk-check[data-week="' + weekKey + '"]');
-      if (!badge) return;
-      badge.className = 'availability';
       if (count === null) return;
+      var text, cls;
       if (count <= 0) {
-        badge.className += ' full';
-        badge.textContent = 'Full';
+        text = 'Full'; cls = 'full';
         if (checkbox) { checkbox.disabled = true; checkbox.checked = false; }
       } else if (count <= 3) {
-        badge.className += ' few';
-        badge.textContent = count + (count === 1 ? ' spot left' : ' spots left');
+        text = count + (count === 1 ? ' spot left' : ' spots left'); cls = 'few';
         if (checkbox) checkbox.disabled = false;
       } else {
-        badge.className += ' open';
-        badge.textContent = count + ' spots left';
+        text = count + ' spots left'; cls = 'open';
         if (checkbox) checkbox.disabled = false;
       }
+      if (badge) { badge.className = 'availability ' + cls; badge.textContent = text; }
+      if (formSpot) formSpot.textContent = ' · ' + text;
     }
 
     fetch(DB + '/spots.json')
