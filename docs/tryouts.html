@@ -1110,12 +1110,14 @@
     var btn = this.querySelector('.submit-btn');
     if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
 
-    fetch('https://formsubmit.co/ajax/2244259490@tmomail.net', {
+    fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
-        _subject: '[Tryout] ' + document.getElementById('tr-fname').value.trim() + ' ' + document.getElementById('tr-lname').value.trim() + ' – ' + document.getElementById('tr-grade').value + ' ' + document.getElementById('tr-gender').value,
-        _template: 'basic',
+        access_key: '9177b794-cdca-4d8d-bab3-c13f189ef334',
+        subject: '[Tryout] ' + document.getElementById('tr-fname').value.trim() + ' ' + document.getElementById('tr-lname').value.trim() + ' – ' + document.getElementById('tr-grade').value + ' ' + document.getElementById('tr-gender').value,
+        from_name: document.getElementById('tr-fname').value.trim() + ' ' + document.getElementById('tr-lname').value.trim(),
+        email: document.getElementById('tr-pemail').value.trim(),
         Player: document.getElementById('tr-fname').value.trim() + ' ' + document.getElementById('tr-lname').value.trim() + ' | ' + document.getElementById('tr-grade').value + ' | ' + document.getElementById('tr-gender').value,
         Parent: document.getElementById('tr-pname').value.trim() + ' | ' + document.getElementById('tr-pphone').value.trim() + ' | ' + document.getElementById('tr-pemail').value.trim()
       })

@@ -565,12 +565,14 @@ MAIN GYM</h4>
     const subject = document.getElementById('cf-subject').value.trim();
     const msg     = document.getElementById('cf-message').value.trim().slice(0, 80);
 
-    fetch('https://formsubmit.co/ajax/2244259490@tmomail.net', {
+    fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
-        _subject: '[Contact] ' + topic + ': ' + fname + ' ' + lname,
-        _template: 'basic',
+        access_key: '9177b794-cdca-4d8d-bab3-c13f189ef334',
+        subject: '[Contact] ' + topic + ': ' + fname + ' ' + lname,
+        from_name: fname + ' ' + lname,
+        email: email,
         Info: fname + ' ' + lname + ' | ' + email + (phone ? ' | ' + phone : ''),
         Re: subject,
         Message: msg

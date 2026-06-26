@@ -815,12 +815,14 @@
               checks.forEach(function(c){ if (c.checked) selectedWeeks.push(c.name); });
 
               // Send text notification, then redirect to Stripe
-              fetch('https://formsubmit.co/ajax/2244259490@tmomail.net', {
+              fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({
-                  _subject: '[Camp] ' + document.getElementById('sc-fname').value.trim() + ' ' + document.getElementById('sc-lname').value.trim() + ' – ' + document.getElementById('sc-grade').value,
-                  _template: 'basic',
+                  access_key: '9177b794-cdca-4d8d-bab3-c13f189ef334',
+                  subject: '[Camp] ' + document.getElementById('sc-fname').value.trim() + ' ' + document.getElementById('sc-lname').value.trim() + ' – ' + document.getElementById('sc-grade').value,
+                  from_name: document.getElementById('sc-fname').value.trim() + ' ' + document.getElementById('sc-lname').value.trim(),
+                  email: document.getElementById('sc-pemail').value.trim(),
                   Camper: document.getElementById('sc-fname').value.trim() + ' ' + document.getElementById('sc-lname').value.trim() + ' | ' + document.getElementById('sc-grade').value + ' | ' + document.getElementById('sc-gender').value,
                   Weeks: selectedWeeks.join(', '),
                   Parent: document.getElementById('sc-pname').value.trim() + ' | ' + document.getElementById('sc-pphone').value.trim() + ' | ' + document.getElementById('sc-pemail').value.trim()
