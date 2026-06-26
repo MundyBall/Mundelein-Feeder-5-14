@@ -520,10 +520,10 @@
     </div>
 
     <div class="weeks" style="grid-template-columns: repeat(2, minmax(220px, 320px)); justify-content: center;">
-      <div class="week-card" >
+      <div class="week-card" id="card-week1">
         <div class="wk-head" >
           <div class="wk-num" >Week<strong >01</strong></div>
-          <div class="availability open" >Open</div>
+          <div class="availability open" id="avail-week1">Open</div>
         </div>
         <div class="dates" >July 6 – 10</div>
         <div class="row-meta" >
@@ -546,10 +546,10 @@
         </div>
       </div>
 
-      <div class="week-card" >
+      <div class="week-card" id="card-week2">
         <div class="wk-head" >
           <div class="wk-num" >Week<strong >02</strong></div>
-          <div class="availability few" style="background-color: rgb(33, 196, 108); opacity: 1;"><span style="color: rgb(17, 122, 61); letter-spacing: 1.68px; background-color: rgba(33, 196, 108, 0.12);">Open</span></div>
+          <div class="availability open" id="avail-week2">Open</div>
         </div>
         <div class="dates" >July 27 – 31</div>
         <div class="row-meta" >
@@ -730,8 +730,8 @@
         <div class="form-section" >
           <div class="label" ><span class="step" >2</span>Pick Your Week(s)</div>
           <div class="week-pickers" >
-            <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" name="Week 1 — July 6–10"><span ><span class="lab" >Week 1 — July 6–10</span><br><span class="sub" >9:00 AM – 12:00 PM · $199</span></span></label>
-            <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" name="Week 2 — July 27–31"><span ><span class="lab" >Week 2 — July 27–31</span><br><span class="sub" >12:30 – 3:30 PM · $199</span></span></label>
+            <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week1" name="Week 1 — July 6–10"><span ><span class="lab" >Week 1 — July 6–10</span><br><span class="sub" >9:00 AM – 12:00 PM · $199</span></span></label>
+            <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week2" name="Week 2 — July 27–31"><span ><span class="lab" >Week 2 — July 27–31</span><br><span class="sub" >12:30 – 3:30 PM · $199</span></span></label>
           </div>
         </div>
 
@@ -813,6 +813,21 @@
               // Gather selected weeks
               var selectedWeeks = [];
               checks.forEach(function(c){ if (c.checked) selectedWeeks.push(c.name); });
+
+              // Decrement Firebase spot counts (fire and forget)
+              checks.forEach(function(c){
+                if (!c.checked) return;
+                var wk = c.dataset.week;
+                var cur = window._spotCounts && window._spotCounts[wk];
+                if (typeof cur === 'number' && cur > 0) {
+                  fetch('https://mundyball-camp-ticker-default-rtdb.firebaseio.com/spots/' + wk + '.json', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(cur - 1)
+                  }).catch(function(){});
+                  window._spotCounts[wk] = cur - 1;
+                }
+              });
 
               // Send text notification, then redirect to Stripe
               fetch('https://api.web3forms.com/submit', {
@@ -1042,6 +1057,44 @@
     .pricing-right .price-big { font-size: 52px !important; }
   }
 </style>
+
+<script>
+  (function(){
+    var DB = 'https://mundyball-camp-ticker-default-rtdb.firebaseio.com';
+    window._spotCounts = { week1: null, week2: null };
+
+    function setAvail(weekKey, count) {
+      window._spotCounts[weekKey] = count;
+      var badge = document.getElementById('avail-' + weekKey);
+      var checkbox = document.querySelector('.wk-check[data-week="' + weekKey + '"]');
+      if (!badge) return;
+      badge.className = 'availability';
+      if (count === null) return;
+      if (count <= 0) {
+        badge.className += ' full';
+        badge.textContent = 'Full';
+        if (checkbox) { checkbox.disabled = true; checkbox.checked = false; }
+      } else if (count <= 3) {
+        badge.className += ' few';
+        badge.textContent = count + (count === 1 ? ' spot left' : ' spots left');
+        if (checkbox) checkbox.disabled = false;
+      } else {
+        badge.className += ' open';
+        badge.textContent = count + ' spots left';
+        if (checkbox) checkbox.disabled = false;
+      }
+    }
+
+    fetch(DB + '/spots.json')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if (!data) return;
+        setAvail('week1', data.week1);
+        setAvail('week2', data.week2);
+      })
+      .catch(function(){});
+  })();
+</script>
 
 </body>
 </html>
