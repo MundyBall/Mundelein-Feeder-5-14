@@ -212,6 +212,10 @@
   .wp input { accent-color: var(--mustang-red); margin: 0; }
   .wp .lab { font-weight: 800; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mustang-charcoal); }
   .wp .sub { font-weight: 500; font-size: 11px; color: var(--fg-3); }
+  .wp.sold-out { cursor: not-allowed; background: var(--mustang-gray-50); border-color: var(--border); opacity: 0.6; }
+  .wp.sold-out:hover { border-color: var(--border); }
+  .wp.sold-out .lab { text-decoration: line-through; color: var(--fg-3); }
+  .wp.sold-out input { pointer-events: none; }
   .checkbox-row { display: flex; gap: 10px; align-items: flex-start; padding: 14px; background: var(--mustang-gray-50); border: 1px solid var(--border); border-radius: 6px; }
   .checkbox-row input { margin-top: 2px; accent-color: var(--mustang-red); }
   .checkbox-row label { font-weight: 600; font-size: 13px; color: var(--mustang-charcoal); line-height: 1.5; }
@@ -1076,17 +1080,21 @@
       var badge = document.getElementById('avail-' + weekKey);
       var formSpot = document.getElementById('form-spots-' + weekKey);
       var checkbox = document.querySelector('.wk-check[data-week="' + weekKey + '"]');
+      var wpLabel = checkbox ? checkbox.closest('.wp') : null;
       if (count === null) return;
       var text, cls;
       if (count <= 0) {
-        text = 'Full'; cls = 'full';
+        text = 'Sold Out'; cls = 'full';
         if (checkbox) { checkbox.disabled = true; checkbox.checked = false; checkbox.dispatchEvent(new Event('change')); }
+        if (wpLabel) wpLabel.classList.add('sold-out');
       } else if (count <= 3) {
         text = count + (count === 1 ? ' spot left' : ' spots left'); cls = 'few';
         if (checkbox) checkbox.disabled = false;
+        if (wpLabel) wpLabel.classList.remove('sold-out');
       } else {
         text = count + ' spots left'; cls = 'open';
         if (checkbox) checkbox.disabled = false;
+        if (wpLabel) wpLabel.classList.remove('sold-out');
       }
       if (badge) { badge.className = 'availability ' + cls; badge.textContent = text; }
       if (formSpot) formSpot.textContent = ' · ' + text;
