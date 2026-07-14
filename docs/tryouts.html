@@ -705,12 +705,21 @@
           </div>
         </div>
 
-        <button type="submit" class="submit-btn">
+        <button type="submit" class="submit-btn" id="tryout-submit-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
           Reserve Tryout Slot
         </button>
 
       </form>
+
+      <div id="tryout-success" style="display:none; padding: 40px 32px; background: #fff; border: 2px solid #21c46c; border-radius: 12px; text-align: center; margin-top: 8px;">
+        <div style="width:56px; height:56px; border-radius:50%; background:rgba(33,196,108,0.12); display:flex; align-items:center; justify-content:center; margin: 0 auto 18px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#21c46c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h3 style="font-weight:900; font-size:22px; text-transform:uppercase; letter-spacing:-0.01em; color:var(--mustang-charcoal-900); margin:0 0 10px;">You're registered!</h3>
+        <p style="font-weight:500; font-size:15px; color:var(--fg-2); line-height:1.55; margin:0 0 6px;">We received your tryout registration. Coach Gio will follow up by email with your confirmed date, time, and location.</p>
+        <p style="font-weight:600; font-size:13px; color:var(--fg-3); margin:0;">Questions? Email <a href="mailto:mundeleinboysbasketball@gmail.com" style="color:var(--mustang-red);">mundeleinboysbasketball@gmail.com</a></p>
+      </div>
 
       <aside class="reg-side">
         <div class="summary-card">
@@ -1107,23 +1116,25 @@
 <script>
   document.getElementById('registration-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    var btn = this.querySelector('.submit-btn');
-    if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
+    var form = this;
+    var btn = document.getElementById('tryout-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Submitting…';
 
-    fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        access_key: '9177b794-cdca-4d8d-bab3-c13f189ef334',
-        subject: '[Tryout] ' + document.getElementById('tr-fname').value.trim() + ' ' + document.getElementById('tr-lname').value.trim() + ' – ' + document.getElementById('tr-grade').value + ' ' + document.getElementById('tr-gender').value,
-        from_name: document.getElementById('tr-fname').value.trim() + ' ' + document.getElementById('tr-lname').value.trim(),
-        email: document.getElementById('tr-pemail').value.trim(),
-        Player: document.getElementById('tr-fname').value.trim() + ' ' + document.getElementById('tr-lname').value.trim() + ' | ' + document.getElementById('tr-grade').value + ' | ' + document.getElementById('tr-gender').value,
-        Parent: document.getElementById('tr-pname').value.trim() + ' | ' + document.getElementById('tr-pphone').value.trim() + ' | ' + document.getElementById('tr-pemail').value.trim()
-      })
-    }).catch(function(){}).finally(function(){
-      document.getElementById('reg-success').scrollIntoView({ behavior: 'smooth' });
-    });
+    function showSuccess() {
+      form.style.display = 'none';
+      var success = document.getElementById('tryout-success');
+      success.style.display = 'block';
+      success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    var fd = new FormData(form);
+    fd.set('access_key', '9177b794-cdca-4d8d-bab3-c13f189ef334');
+    fd.set('subject', 'New Mustangs Tryout Registration');
+
+    fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd })
+      .catch(function(){})
+      .finally(showSuccess);
   });
 </script>
 </body></html>
