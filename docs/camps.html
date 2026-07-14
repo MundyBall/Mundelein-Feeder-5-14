@@ -206,7 +206,7 @@
   .field label .req { color: var(--mustang-red); }
   .field input, .field select, .field textarea { padding: 12px 14px; border: 1px solid var(--border); border-radius: 6px; background: #fff; font-weight: 600; font-size: 14px; color: var(--mustang-charcoal); transition: border-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out); }
   .field input:focus, .field select:focus, .field textarea:focus { outline: 0; border-color: var(--mustang-red); box-shadow: 0 0 0 3px rgba(204,32,39,0.12); }
-  .week-pickers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .week-pickers { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
   .wp { display: flex; gap: 10px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; align-items: center; transition: border-color 200ms var(--ease-out), background 200ms var(--ease-out); }
   .wp:hover { border-color: var(--mustang-red); }
   .wp input { accent-color: var(--mustang-red); margin: 0; }
@@ -517,13 +517,13 @@
     <div class="week-head" style="justify-content: center; text-align: center;">
       <div>
         <div class="eyebrow" style="justify-content: center;"><span class="bar"></span>Pick Your Week</div>
-        <h2 class="section-title">Two weeks. <span style="color: var(--mustang-red);">Sign up for one or both.</span></h2>
+        <h2 class="section-title">Three weeks. <span style="color: var(--mustang-red);">Sign up for one or more.</span></h2>
         <p class="section-lede" style="margin-left: auto; margin-right: auto;">Weeks fill in the order they sell out.</p>
-        <p class="section-lede" style="margin-left: auto; margin-right: auto;">Both weeks at MHS Main Gym. Same coaches, same playbook, progressively building from week to week. Two-week registrations get $20 off their 2nd week.</p>
+        <p class="section-lede" style="margin-left: auto; margin-right: auto;">All weeks at MHS Main Gym. Same coaches, same playbook, progressively building week to week. Multi-week registrations get $20 off each additional week.</p>
       </div>
     </div>
 
-    <div class="weeks" style="grid-template-columns: repeat(2, minmax(220px, 320px)); justify-content: center;">
+    <div class="weeks" style="grid-template-columns: repeat(3, minmax(220px, 320px)); justify-content: center;">
       <div class="week-card" id="card-week1">
         <div class="wk-head" >
           <div class="wk-num" >Week<strong >01</strong></div>
@@ -573,6 +573,32 @@
         <div class="pricing" >
           <div class="price" >$199<small >/ camper</small></div>
           <a class="pick" href="#register" >Sign up→ </a>
+        </div>
+      </div>
+
+      <div class="week-card" id="card-week3">
+        <div class="wk-head">
+          <div class="wk-num">Week<strong>03</strong></div>
+          <div class="availability open" id="avail-week3">Open</div>
+        </div>
+        <div class="dates">Aug 3 – 7</div>
+        <div class="row-meta">
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            12:30 PM – 3:30 PM
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            MHS Main Gym
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"></circle><circle cx="17" cy="7" r="4"></circle><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path></svg>
+            Ages 8–14
+          </div>
+        </div>
+        <div class="pricing">
+          <div class="price">$199<small>/ camper</small></div>
+          <a class="pick" href="#register">Sign up→</a>
         </div>
       </div>
 
@@ -661,7 +687,7 @@
           <div class="val" >$199</div>
         </div>
         <div class="price-row" >
-          <div class="label-l" >2nd Additional Week<small ></small></div>
+          <div class="label-l" >Each Additional Week<small ></small></div>
           <div class="val discount" >−$20 off</div>
         </div>
         <div class="price-row" style="border-bottom: 0px; ">
@@ -736,6 +762,7 @@
           <div class="week-pickers" >
             <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week1" name="Week 1 — July 6–10"><span ><span class="lab" >Week 1 — July 6–10</span><br><span class="sub" >9:00 AM – 12:00 PM · $199</span><span class="form-spots" id="form-spots-week1"></span></span></label>
             <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week2" name="Week 2 — July 27–31"><span ><span class="lab" >Week 2 — July 27–31</span><br><span class="sub" >12:30 – 3:30 PM · $199</span><span class="form-spots" id="form-spots-week2"></span></span></label>
+            <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week3" name="Week 3 — August 3–7"><span ><span class="lab" >Week 3 — Aug 3–7</span><br><span class="sub" >12:30 – 3:30 PM · $199</span><span class="form-spots" id="form-spots-week3"></span></span></label>
           </div>
         </div>
 
@@ -1073,7 +1100,7 @@
 <script>
   (function(){
     var DB = 'https://mundyball-camp-ticker-default-rtdb.firebaseio.com';
-    window._spotCounts = { week1: null, week2: null };
+    window._spotCounts = { week1: null, week2: null, week3: null };
 
     function setAvail(weekKey, count) {
       window._spotCounts[weekKey] = count;
@@ -1106,6 +1133,7 @@
         if (!data) return;
         setAvail('week1', data.week1);
         setAvail('week2', data.week2);
+        setAvail('week3', data.week3);
       })
       .catch(function(){});
   })();
