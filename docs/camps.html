@@ -827,6 +827,10 @@
             form.addEventListener('submit', function(e){
               e.preventDefault();
 
+              // Force-uncheck week3 (not yet open) regardless of DOM state
+              checks.forEach(function(c){ if (c.dataset.week === 'week3') { c.checked = false; } });
+              update();
+
               // Block if any selected week is sold out
               var soldOut = false;
               checks.forEach(function(c){
