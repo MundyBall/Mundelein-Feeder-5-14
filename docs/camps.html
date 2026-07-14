@@ -762,7 +762,7 @@
           <div class="week-pickers" >
             <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week1" name="Week 1 — July 6–10"><span ><span class="lab" >Week 1 — July 6–10</span><br><span class="sub" >9:00 AM – 12:00 PM · $199</span><span class="form-spots" id="form-spots-week1"></span></span></label>
             <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week2" name="Week 2 — July 27–31"><span ><span class="lab" >Week 2 — July 27–31</span><br><span class="sub" >12:30 – 3:30 PM · $199</span><span class="form-spots" id="form-spots-week2"></span></span></label>
-            <label class="wp sold-out" style="cursor:default;"><input type="checkbox" class="wk-check" data-price="199" data-week="week3" name="Week 3 — August 3–7" disabled><span ><span class="lab" >Week 3 — Aug 3–7</span><br><span class="sub" >12:30 – 3:30 PM · $199</span><span class="form-spots" style="color:var(--fg-3);" id="form-spots-week3"> · Coming Soon</span></span></label>
+            <label class="wp"><input type="checkbox" class="wk-check" data-price="199" data-week="week3" name="Week 3 — August 3–7"><span><span class="lab">Week 3 — Aug 3–7</span><br><span class="sub">12:30 – 3:30 PM · $199</span><span class="form-spots" style="color:var(--fg-3);" id="form-spots-week3"> · Coming Soon</span></span></label>
           </div>
         </div>
 
@@ -804,10 +804,16 @@
             var stripeUrl = '';
 
             function update(){
-              var n = 0;
-              checks.forEach(function(c){ if (c.checked) n++; });
+              var n = 0, week3checked = false;
+              checks.forEach(function(c){ if (c.checked) { n++; if (c.dataset.week === 'week3') week3checked = true; } });
               if (n === 0) {
                 label.textContent = 'Select a week to continue';
+                btn.disabled = true;
+                btn.style.opacity = '0.55';
+                btn.style.cursor = 'not-allowed';
+                stripeUrl = '';
+              } else if (week3checked) {
+                label.textContent = 'Week 3 Coming Soon — Registration Not Yet Open';
                 btn.disabled = true;
                 btn.style.opacity = '0.55';
                 btn.style.cursor = 'not-allowed';
