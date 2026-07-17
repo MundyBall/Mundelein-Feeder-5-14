@@ -440,42 +440,88 @@
 </section>
 
 <!-- INTERESTED IN COACHING -->
+<style>
+  .chip-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .chip-group label { display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px; border: 2px solid var(--border); border-radius: 999px; background: #fff; font-weight: 700; font-size: 13px; cursor: pointer; transition: border-color 150ms, background 150ms, color 150ms; user-select: none; }
+  .chip-group label:hover { border-color: var(--mustang-red); }
+  .chip-group input[type="checkbox"] { display: none; }
+  .chip-group input[type="checkbox"]:checked + span { color: #fff; }
+  .chip-group label:has(input:checked) { background: var(--mustang-red); border-color: var(--mustang-red); color: #fff; }
+  .coaching-field-label { display: block; font-weight: 800; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mustang-red); margin-bottom: 6px; }
+  .coaching-input { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 6px; font-size: 15px; font-family: inherit; background: #fff; box-sizing: border-box; }
+  .coaching-input:focus { outline: none; border-color: var(--mustang-red); }
+</style>
+
 <section class="panel" id="join-the-staff" style="background: var(--mustang-gray-50); border-top: 3px solid var(--mustang-red);">
   <div class="container" style="max-width: 720px;">
     <div class="eyebrow"><span class="bar"></span>Join the Staff</div>
     <h2 class="section-title" style="font-size: clamp(32px, 4vw, 52px);">Interested in <span style="color:var(--mustang-red);">Coaching?</span></h2>
     <p class="section-lede" style="margin-bottom: 36px;">We're always looking for passionate coaches who want to develop young players and be part of something bigger than the game. Drop your info below and Coach Gio will reach out personally.</p>
 
-    <form id="coaching-interest-form" style="display:grid; gap: 16px;">
+    <form id="coaching-interest-form" style="display:grid; gap: 20px;">
+
+      <!-- Name / Phone -->
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
         <div>
-          <label style="display:block; font-weight:800; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mustang-red); margin-bottom:6px;">Your Name <span style="color:var(--mustang-red);">*</span></label>
-          <input type="text" name="Applicant Name" placeholder="First Last" required style="width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:6px; font-size:15px; font-family:inherit; background:#fff; box-sizing:border-box;">
+          <label class="coaching-field-label">Your Name <span>*</span></label>
+          <input type="text" name="Applicant Name" placeholder="First Last" required class="coaching-input">
         </div>
         <div>
-          <label style="display:block; font-weight:800; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mustang-red); margin-bottom:6px;">Phone</label>
-          <input type="tel" name="Applicant Phone" placeholder="(847) 555-0100" style="width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:6px; font-size:15px; font-family:inherit; background:#fff; box-sizing:border-box;">
+          <label class="coaching-field-label">Phone</label>
+          <input type="tel" name="Applicant Phone" placeholder="(847) 555-0100" class="coaching-input">
         </div>
       </div>
+
+      <!-- Email -->
       <div>
-        <label style="display:block; font-weight:800; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mustang-red); margin-bottom:6px;">Email <span style="color:var(--mustang-red);">*</span></label>
-        <input type="email" name="Applicant Email" placeholder="you@email.com" required style="width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:6px; font-size:15px; font-family:inherit; background:#fff; box-sizing:border-box;">
+        <label class="coaching-field-label">Email <span>*</span></label>
+        <input type="email" name="Applicant Email" placeholder="you@email.com" required class="coaching-input">
       </div>
+
+      <!-- Resume -->
       <div>
-        <label style="display:block; font-weight:800; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mustang-red); margin-bottom:6px;">Role Interest</label>
-        <select name="Role Interest" style="width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:6px; font-size:15px; font-family:inherit; background:#fff; box-sizing:border-box;">
-          <option value="">Select one…</option>
-          <option>Feeder Program Coach (Grades 4–8)</option>
-          <option>Skills & Development Coach</option>
-          <option>Camp Coach / Staff</option>
-          <option>Volunteer Assistant</option>
-          <option>Other</option>
-        </select>
+        <label class="coaching-field-label">Resume <span style="font-weight:500; text-transform:none; letter-spacing:0; font-size:11px; color:var(--fg-3);">(optional — PDF, Word, or image)</span></label>
+        <input type="file" name="Resume" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" class="coaching-input" style="padding: 10px 14px; cursor:pointer;">
       </div>
+
+      <!-- Boys / Girls -->
       <div>
-        <label style="display:block; font-weight:800; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mustang-red); margin-bottom:6px;">Tell Us About Yourself</label>
-        <textarea name="Background" rows="4" placeholder="Playing background, coaching experience, availability, why you want to coach with the Jr. Mustangs…" style="width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:6px; font-size:15px; font-family:inherit; background:#fff; resize:vertical; box-sizing:border-box;"></textarea>
+        <label class="coaching-field-label">Interested in Coaching</label>
+        <div class="chip-group">
+          <label><input type="checkbox" name="Coaching: Boys" value="Yes"><span>Boys</span></label>
+          <label><input type="checkbox" name="Coaching: Girls" value="Yes"><span>Girls</span></label>
+        </div>
       </div>
+
+      <!-- Grades -->
+      <div>
+        <label class="coaching-field-label">What Grade(s)?</label>
+        <div class="chip-group">
+          <label><input type="checkbox" name="Grade: 4th" value="Yes"><span>4th Grade</span></label>
+          <label><input type="checkbox" name="Grade: 5th" value="Yes"><span>5th Grade</span></label>
+          <label><input type="checkbox" name="Grade: 6th" value="Yes"><span>6th Grade</span></label>
+          <label><input type="checkbox" name="Grade: 7th" value="Yes"><span>7th Grade</span></label>
+          <label><input type="checkbox" name="Grade: 8th" value="Yes"><span>8th Grade</span></label>
+        </div>
+      </div>
+
+      <!-- Program Interest -->
+      <div>
+        <label class="coaching-field-label">Would You Like to Coach</label>
+        <div class="chip-group">
+          <label><input type="checkbox" name="Program: Winter Feeder" value="Yes"><span>Winter Feeder</span></label>
+          <label><input type="checkbox" name="Program: Seasonal Camps" value="Yes"><span>Seasonal Camps</span></label>
+          <label><input type="checkbox" name="Program: Volunteer" value="Yes"><span>Volunteer</span></label>
+          <label><input type="checkbox" name="Program: Other" value="Yes"><span>Other</span></label>
+        </div>
+      </div>
+
+      <!-- Background -->
+      <div>
+        <label class="coaching-field-label">Tell Us About Yourself</label>
+        <textarea name="Background" rows="5" placeholder="Playing background, coaching experience, availability, why you want to coach with the Jr. Mustangs…" class="coaching-input" style="resize:vertical;"></textarea>
+      </div>
+
       <div>
         <button type="submit" id="coaching-submit-btn" style="display:inline-flex; align-items:center; gap:10px; background:var(--mustang-red); color:#fff; font-weight:800; font-size:13px; letter-spacing:0.12em; text-transform:uppercase; padding:16px 28px; border-radius:6px; border:none; cursor:pointer; font-family:inherit;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
