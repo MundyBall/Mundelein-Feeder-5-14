@@ -480,8 +480,8 @@
 
       <!-- Resume -->
       <div>
-        <label class="coaching-field-label">Resume <span style="font-weight:500; text-transform:none; letter-spacing:0; font-size:11px; color:var(--fg-3);">(optional — PDF, Word, or image)</span></label>
-        <input type="file" name="Resume" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" class="coaching-input" style="padding: 10px 14px; cursor:pointer;">
+        <label class="coaching-field-label">Resume / LinkedIn <span style="font-weight:500; text-transform:none; letter-spacing:0; font-size:11px; color:var(--fg-3);">(optional — paste a link or describe your background below)</span></label>
+        <input type="text" name="Resume / LinkedIn" placeholder="https://linkedin.com/in/yourname or leave blank" class="coaching-input">
       </div>
 
       <!-- Boys / Girls -->
@@ -551,12 +551,23 @@
     fd.set('access_key', '9177b794-cdca-4d8d-bab3-c13f189ef334');
     fd.set('subject', 'Coaching Interest — Jr. Mustangs Feeder');
     fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd })
-      .catch(function(){})
-      .finally(function() {
-        form.style.display = 'none';
-        var success = document.getElementById('coaching-success');
-        success.style.display = 'block';
-        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success) {
+          form.style.display = 'none';
+          var success = document.getElementById('coaching-success');
+          success.style.display = 'block';
+          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg> Send My Info to Coach Gio';
+          alert('Something went wrong — please try again or email coachgiopag@gmail.com directly.');
+        }
+      })
+      .catch(function() {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg> Send My Info to Coach Gio';
+        alert('Something went wrong — please try again or email coachgiopag@gmail.com directly.');
       });
   });
 </script>
