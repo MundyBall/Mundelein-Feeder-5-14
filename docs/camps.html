@@ -579,7 +579,7 @@
       <div class="week-card" id="card-week3">
         <div class="wk-head">
           <div class="wk-num">Week<strong>03</strong></div>
-          <div class="availability" style="background:rgba(100,100,120,0.12); color:var(--fg-2);">Coming Soon</div>
+          <div class="availability open" id="avail-week3">36 spots left</div>
         </div>
         <div class="dates">Aug 3 – 7</div>
         <div class="row-meta">
@@ -598,7 +598,7 @@
         </div>
         <div class="pricing">
           <div class="price">$199<small>/ camper</small></div>
-          <span class="pick" style="color:var(--fg-3); cursor:default;">Coming Soon</span>
+          <a class="pick" href="#register">Sign up →</a>
         </div>
       </div>
 
@@ -762,7 +762,7 @@
           <div class="week-pickers" >
             <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week1" name="Week 1 — July 6–10"><span ><span class="lab" >Week 1 — July 6–10</span><br><span class="sub" >9:00 AM – 12:00 PM · $199</span><span class="form-spots" id="form-spots-week1"></span></span></label>
             <label class="wp" ><input type="checkbox" class="wk-check" data-price="199" data-week="week2" name="Week 2 — July 27–31"><span ><span class="lab" >Week 2 — July 27–31</span><br><span class="sub" >1:30 – 4:30 PM · $199</span><span class="form-spots" id="form-spots-week2"></span></span></label>
-            <label class="wp"><input type="checkbox" class="wk-check" data-price="199" data-week="week3" name="Week 3 — August 3–7"><span><span class="lab">Week 3 — Aug 3–7</span><br><span class="sub">12:30 – 3:30 PM · $199</span><span class="form-spots" style="color:var(--fg-3);" id="form-spots-week3"> · Coming Soon</span></span></label>
+            <label class="wp"><input type="checkbox" class="wk-check" data-price="199" data-week="week3" name="Week 3 — August 3–7"><span><span class="lab">Week 3 — Aug 3–7</span><br><span class="sub">12:30 – 3:30 PM · $199</span><span class="form-spots" id="form-spots-week3"></span></span></label>
           </div>
         </div>
 
@@ -804,16 +804,10 @@
             var stripeUrl = '';
 
             function update(){
-              var n = 0, week3checked = false;
-              checks.forEach(function(c){ if (c.checked) { n++; if (c.dataset.week === 'week3') week3checked = true; } });
+              var n = 0;
+              checks.forEach(function(c){ if (c.checked) { n++; } });
               if (n === 0) {
                 label.textContent = 'Select a week to continue';
-                btn.disabled = true;
-                btn.style.opacity = '0.55';
-                btn.style.cursor = 'not-allowed';
-                stripeUrl = '';
-              } else if (week3checked) {
-                label.textContent = 'Week 3 Coming Soon — Registration Not Yet Open';
                 btn.disabled = true;
                 btn.style.opacity = '0.55';
                 btn.style.cursor = 'not-allowed';
@@ -832,10 +826,6 @@
 
             form.addEventListener('submit', function(e){
               e.preventDefault();
-
-              // Force-uncheck week3 (not yet open) regardless of DOM state
-              checks.forEach(function(c){ if (c.dataset.week === 'week3') { c.checked = false; } });
-              update();
 
               // Block if any selected week is sold out
               var soldOut = false;
