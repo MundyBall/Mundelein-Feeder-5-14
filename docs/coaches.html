@@ -439,6 +439,82 @@
   </div>
 </section>
 
+<!-- INTERESTED IN COACHING -->
+<section class="panel" id="join-the-staff" style="background: var(--mustang-gray-50); border-top: 3px solid var(--mustang-red);">
+  <div class="container" style="max-width: 720px;">
+    <div class="eyebrow"><span class="bar"></span>Join the Staff</div>
+    <h2 class="section-title" style="font-size: clamp(32px, 4vw, 52px);">Interested in <span style="color:var(--mustang-red);">Coaching?</span></h2>
+    <p class="section-lede" style="margin-bottom: 36px;">We're always looking for passionate coaches who want to develop young players and be part of something bigger than the game. Drop your info below and Coach Gio will reach out personally.</p>
+
+    <form id="coaching-interest-form" style="display:grid; gap: 16px;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div>
+          <label style="display:block; font-weight:800; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mustang-red); margin-bottom:6px;">Your Name <span style="color:var(--mustang-red);">*</span></label>
+          <input type="text" name="Applicant Name" placeholder="First Last" required style="width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:6px; font-size:15px; font-family:inherit; background:#fff; box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="display:block; font-weight:800; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mustang-red); margin-bottom:6px;">Phone</label>
+          <input type="tel" name="Applicant Phone" placeholder="(847) 555-0100" style="width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:6px; font-size:15px; font-family:inherit; background:#fff; box-sizing:border-box;">
+        </div>
+      </div>
+      <div>
+        <label style="display:block; font-weight:800; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mustang-red); margin-bottom:6px;">Email <span style="color:var(--mustang-red);">*</span></label>
+        <input type="email" name="Applicant Email" placeholder="you@email.com" required style="width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:6px; font-size:15px; font-family:inherit; background:#fff; box-sizing:border-box;">
+      </div>
+      <div>
+        <label style="display:block; font-weight:800; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mustang-red); margin-bottom:6px;">Role Interest</label>
+        <select name="Role Interest" style="width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:6px; font-size:15px; font-family:inherit; background:#fff; box-sizing:border-box;">
+          <option value="">Select one…</option>
+          <option>Feeder Program Coach (Grades 4–8)</option>
+          <option>Skills & Development Coach</option>
+          <option>Camp Coach / Staff</option>
+          <option>Volunteer Assistant</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label style="display:block; font-weight:800; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mustang-red); margin-bottom:6px;">Tell Us About Yourself</label>
+        <textarea name="Background" rows="4" placeholder="Playing background, coaching experience, availability, why you want to coach with the Jr. Mustangs…" style="width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:6px; font-size:15px; font-family:inherit; background:#fff; resize:vertical; box-sizing:border-box;"></textarea>
+      </div>
+      <div>
+        <button type="submit" id="coaching-submit-btn" style="display:inline-flex; align-items:center; gap:10px; background:var(--mustang-red); color:#fff; font-weight:800; font-size:13px; letter-spacing:0.12em; text-transform:uppercase; padding:16px 28px; border-radius:6px; border:none; cursor:pointer; font-family:inherit;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
+          Send My Info to Coach Gio
+        </button>
+      </div>
+    </form>
+
+    <div id="coaching-success" style="display:none; padding:40px 32px; background:#fff; border:2px solid #21c46c; border-radius:12px; text-align:center; margin-top:8px;">
+      <div style="width:56px; height:56px; border-radius:50%; background:rgba(33,196,108,0.12); display:flex; align-items:center; justify-content:center; margin:0 auto 18px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#21c46c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h3 style="font-weight:900; font-size:22px; text-transform:uppercase; color:var(--mustang-charcoal); margin:0 0 10px;">Got it — thanks!</h3>
+      <p style="font-weight:500; font-size:15px; color:var(--fg-2); margin:0;">Coach Gio will be in touch personally. Questions in the meantime? Email <a href="mailto:coachgiopag@gmail.com" style="color:var(--mustang-red);">coachgiopag@gmail.com</a>.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.getElementById('coaching-interest-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var form = this;
+    var btn = document.getElementById('coaching-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Sending…';
+    var fd = new FormData(form);
+    fd.set('access_key', '9177b794-cdca-4d8d-bab3-c13f189ef334');
+    fd.set('subject', 'Coaching Interest — Jr. Mustangs Feeder');
+    fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd })
+      .catch(function(){})
+      .finally(function() {
+        form.style.display = 'none';
+        var success = document.getElementById('coaching-success');
+        success.style.display = 'block';
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+  });
+</script>
+
 <!-- SOCIAL STRIP -->
 <div class="social-strip">
   <div class="social-inner">
