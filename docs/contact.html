@@ -382,13 +382,21 @@ If you're not sure, just choose "General" and we'll figure it out.</p>
           <span class="help">Most replies happen within 24 hours. Urgent? Call (224) 425-9490</span>
         </div>
 
-        <button type="submit" class="submit-btn">
+        <button type="submit" class="submit-btn" id="contact-submit-btn">
           Send Message
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </button>
         <div class="form-foot">
 </div>
       </form>
+
+      <div id="contact-success" style="display:none; padding:40px 32px; background:#fff; border:2px solid #21c46c; border-radius:12px; text-align:center; margin-top:8px;">
+        <div style="width:56px; height:56px; border-radius:50%; background:rgba(33,196,108,0.12); display:flex; align-items:center; justify-content:center; margin:0 auto 18px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#21c46c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h3 style="font-weight:900; font-size:22px; text-transform:uppercase; color:var(--mustang-charcoal); margin:0 0 10px;">Message sent!</h3>
+        <p style="font-weight:500; font-size:15px; color:var(--fg-2); margin:0;">We'll be in touch within 24 hours. Questions in the meantime? Email <a href="mailto:mundeleinboysbasketball@gmail.com" style="color:var(--mustang-red);">mundeleinboysbasketball@gmail.com</a>.</p>
+      </div>
 
       <div class="info-stack">
         <div class="info-card dark">
@@ -557,6 +565,11 @@ MAIN GYM</h4>
 
   document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
+    var form = this;
+    var btn = document.getElementById('contact-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Sending…';
+
     const topic   = (document.querySelector('#topicRow .topic-pill.active') || {}).dataset?.topic || 'general';
     const fname   = document.getElementById('cf-fname').value.trim();
     const lname   = document.getElementById('cf-lname').value.trim();
@@ -577,9 +590,25 @@ MAIN GYM</h4>
         Re: subject,
         Message: msg
       })
-    }).catch(() => {});
-
-    alert('Thanks — we\'ll be in touch within 24 hours.');
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (data.success) {
+        form.style.display = 'none';
+        var success = document.getElementById('contact-success');
+        success.style.display = 'block';
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = 'Send Message <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+        alert('Something went wrong — please try again or email mundeleinboysbasketball@gmail.com directly.');
+      }
+    })
+    .catch(function() {
+      btn.disabled = false;
+      btn.innerHTML = 'Send Message <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+      alert('Something went wrong — please try again or email mundeleinboysbasketball@gmail.com directly.');
+    });
   });
 </script>
 
