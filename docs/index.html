@@ -275,6 +275,7 @@
     transform-style: preserve-3d;
     box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(204,32,39,0.2) inset;
     position: relative;
+    will-change: transform, opacity;
   }
   .hero-card .hc-eyebrow {
     font-family: var(--font-display); font-weight: 800; font-size: 11px;
@@ -1183,6 +1184,7 @@ BRING WATER, A SMILE, AND YOUR JUMP SHOT.</div>
     const crowdEl = document.getElementById('crowd');
     const confEl  = document.getElementById('confetti');
     const beams   = Array.from(document.querySelectorAll('.beam'));
+    const heroCard = document.querySelector('.hero-card');
 
     // ---------- Build a single realistic basketball SVG ----------
     function makeBallSVG(seed) {
@@ -1507,6 +1509,12 @@ BRING WATER, A SMILE, AND YOUR JUMP SHOT.</div>
         const tx = (i - 1) * 30;
         beams[i].style.transform = `translateX(${tx}vw) rotate(${baseAng + sway}deg)`;
       }
+
+      // Slide hero card left and fade as user scrolls (starts at p=0.08, gone by p=0.38)
+      const cardSlide = Math.min(1, Math.max(0, (p - 0.08) / 0.30));
+      heroCard.style.transform = `translateX(${cardSlide * -130}%) rotateY(-4deg) rotateX(2deg)`;
+      heroCard.style.opacity = 1 - cardSlide;
+      heroCard.style.pointerEvents = cardSlide > 0.5 ? 'none' : '';
 
       // Slight scene fade as user scrolls past hero so content sections breathe
       scene.style.opacity = Math.max(0.45, 1 - Math.max(0, p - 0.9) * 0.6);
