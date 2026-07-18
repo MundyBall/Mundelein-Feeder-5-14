@@ -319,45 +319,46 @@ If you're not sure, just choose "General" and we'll figure it out.</p>
         <p class="subtle">All fields marked with <span style="color: var(--mustang-red); font-weight: 800;">*</span> are required.</p>
 
         <div class="topic-row" id="topicRow">
-          <div class="topic-pill active" data-topic="general">General</div>
-          <div class="topic-pill" data-topic="tryouts">Tryouts</div>
-          <div class="topic-pill" data-topic="camp">Camps</div>
-          <div class="topic-pill" data-topic="scholarship">Scholarship</div>
-          <div class="topic-pill" data-topic="coaching">Coaching</div>
-          <div class="topic-pill" data-topic="board">Board / Volunteer</div>
+          <div class="topic-pill active" data-topic="General">General</div>
+          <div class="topic-pill" data-topic="Tryouts">Tryouts</div>
+          <div class="topic-pill" data-topic="Camps">Camps</div>
+          <div class="topic-pill" data-topic="Scholarship">Scholarship</div>
+          <div class="topic-pill" data-topic="Coaching">Coaching</div>
+          <div class="topic-pill" data-topic="Board / Volunteer">Board / Volunteer</div>
         </div>
+        <input type="hidden" name="Topic" id="cf-topic" value="General">
 
         <div class="row-2">
           <div class="field">
-            <label>Parent first name <span class="req">*</span></label>
-            <input type="text" id="cf-fname" required>
+            <label>Parent First Name <span class="req">*</span></label>
+            <input type="text" id="cf-fname" name="Parent First Name" required>
           </div>
           <div class="field">
-            <label>Parent last name <span class="req">*</span></label>
-            <input type="text" id="cf-lname" required>
+            <label>Parent Last Name <span class="req">*</span></label>
+            <input type="text" id="cf-lname" name="Parent Last Name" required>
           </div>
         </div>
 
         <div class="row-2">
           <div class="field">
             <label>Email <span class="req">*</span></label>
-            <input type="email" id="cf-email" required placeholder="you@example.com">
+            <input type="email" id="cf-email" name="Email" required placeholder="you@example.com">
           </div>
           <div class="field">
             <label>Phone</label>
-            <input type="tel" id="cf-phone" placeholder="(847) 555-0123">
+            <input type="tel" id="cf-phone" name="Phone" placeholder="(847) 555-0123">
           </div>
         </div>
 
         <div class="row-2">
           <div class="field">
-            <label>Athlete name</label>
-            <input type="text" placeholder="If applicable">
+            <label>Athlete Name</label>
+            <input type="text" name="Athlete Name" placeholder="If applicable">
           </div>
           <div class="field">
             <label>Grade in 2026–27</label>
-            <select>
-              <option>—</option>
+            <select name="Grade">
+              <option value="">—</option>
               <option>4th Grade</option>
               <option>5th Grade</option>
               <option>6th Grade</option>
@@ -373,12 +374,12 @@ If you're not sure, just choose "General" and we'll figure it out.</p>
 
         <div class="field">
           <label>Subject <span class="req">*</span></label>
-          <input type="text" id="cf-subject" required placeholder="One line summary">
+          <input type="text" id="cf-subject" name="Subject" required placeholder="One line summary">
         </div>
 
         <div class="field">
           <label>Message <span class="req">*</span></label>
-          <textarea id="cf-message" required placeholder="Anything you want us to know — schedule, scholarship, coach question, registration issue. The more detail the better."></textarea>
+          <textarea id="cf-message" name="Message" required placeholder="Anything you want us to know — schedule, scholarship, coach question, registration issue. The more detail the better."></textarea>
           <span class="help">Most replies happen within 24 hours. Urgent? Call (224) 425-9490</span>
         </div>
 
@@ -386,8 +387,6 @@ If you're not sure, just choose "General" and we'll figure it out.</p>
           Send Message
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </button>
-        <div class="form-foot">
-</div>
       </form>
 
       <div id="contact-success" style="display:none; padding:40px 32px; background:#fff; border:2px solid #21c46c; border-radius:12px; text-align:center; margin-top:8px;">
@@ -563,6 +562,15 @@ MAIN GYM</h4>
     });
   });
 
+  // Keep topic hidden field in sync with pill clicks
+  document.querySelectorAll('#topicRow .topic-pill').forEach(function(pill) {
+    pill.addEventListener('click', function() {
+      document.querySelectorAll('#topicRow .topic-pill').forEach(function(p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+      document.getElementById('cf-topic').value = pill.dataset.topic;
+    });
+  });
+
   document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
     var form = this;
@@ -570,45 +578,33 @@ MAIN GYM</h4>
     btn.disabled = true;
     btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Sending…';
 
-    const topic   = (document.querySelector('#topicRow .topic-pill.active') || {}).dataset?.topic || 'general';
-    const fname   = document.getElementById('cf-fname').value.trim();
-    const lname   = document.getElementById('cf-lname').value.trim();
-    const email   = document.getElementById('cf-email').value.trim();
-    const phone   = document.getElementById('cf-phone').value.trim();
-    const subject = document.getElementById('cf-subject').value.trim();
-    const msg     = document.getElementById('cf-message').value.trim().slice(0, 80);
+    var fname = document.getElementById('cf-fname').value.trim();
+    var lname = document.getElementById('cf-lname').value.trim();
+    var topic = document.getElementById('cf-topic').value;
 
-    fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        access_key: '1b0ccc98-2eba-44e0-bbba-a6ec34462411',
-        subject: '[Contact] ' + topic + ': ' + fname + ' ' + lname,
-        from_name: fname + ' ' + lname,
-        email: email,
-        Info: fname + ' ' + lname + ' | ' + email + (phone ? ' | ' + phone : ''),
-        Re: subject,
-        Message: msg
+    var fd = new FormData(form);
+    fd.set('access_key', '1b0ccc98-2eba-44e0-bbba-a6ec34462411');
+    fd.set('subject', 'Contact — ' + topic + ': ' + fname + ' ' + lname);
+
+    fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success) {
+          form.style.display = 'none';
+          var success = document.getElementById('contact-success');
+          success.style.display = 'block';
+          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = 'Send Message <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+          alert('Something went wrong — please try again or email mundeleinboysbasketball@gmail.com directly.');
+        }
       })
-    })
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
-      if (data.success) {
-        form.style.display = 'none';
-        var success = document.getElementById('contact-success');
-        success.style.display = 'block';
-        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else {
+      .catch(function() {
         btn.disabled = false;
         btn.innerHTML = 'Send Message <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
         alert('Something went wrong — please try again or email mundeleinboysbasketball@gmail.com directly.');
-      }
-    })
-    .catch(function() {
-      btn.disabled = false;
-      btn.innerHTML = 'Send Message <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
-      alert('Something went wrong — please try again or email mundeleinboysbasketball@gmail.com directly.');
-    });
+      });
   });
 </script>
 
