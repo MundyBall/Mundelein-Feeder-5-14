@@ -866,19 +866,24 @@
               var selectedWeeks = [];
               checks.forEach(function(c){ if (c.checked) selectedWeeks.push(c.name); });
 
-              // Decrement Firebase spot counts (fire and forget)
+              // Decrement Firebase spot counts (fresh read → write to satisfy validation rule)
               checks.forEach(function(c){
                 if (!c.checked) return;
                 var wk = c.dataset.week;
-                var cur = window._spotCounts && window._spotCounts[wk];
-                if (typeof cur === 'number' && cur > 0) {
-                  fetch('https://mundyball-camp-ticker-default-rtdb.firebaseio.com/spots/' + wk + '.json', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(cur - 1)
+                var DB = 'https://mundyball-camp-ticker-default-rtdb.firebaseio.com';
+                fetch(DB + '/spots/' + wk + '.json')
+                  .then(function(r){ return r.json(); })
+                  .then(function(cur){
+                    if (typeof cur === 'number' && cur > 0) {
+                      fetch(DB + '/spots/' + wk + '.json', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(cur - 1)
+                      }).then(function(){
+                        if (window._spotCounts) window._spotCounts[wk] = cur - 1;
+                      }).catch(function(){});
+                    }
                   }).catch(function(){});
-                  window._spotCounts[wk] = cur - 1;
-                }
               });
 
               // Send notification then redirect to Stripe
