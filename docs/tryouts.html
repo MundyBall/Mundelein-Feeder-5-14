@@ -1179,9 +1179,34 @@
         success.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
-      fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd })
-        .catch(function(){})
-        .finally(showSuccess);
+      function showError(msg) {
+        var el = document.getElementById('tryout-error');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'tryout-error';
+          el.style.cssText = 'margin-top:14px; padding:12px 14px; border-radius:8px; background:var(--mustang-red-100); color:var(--mustang-red-700); font-weight:600; font-size:13px; line-height:1.5;';
+          btn.insertAdjacentElement('afterend', el);
+        }
+        el.textContent = msg;
+        btn.disabled = false;
+        btn.innerHTML = btnHTML;
+      }
+
+      var oldErr = document.getElementById('tryout-error');
+      if (oldErr) oldErr.remove();
+
+      // Only confirm once Web3Forms says the email was accepted; otherwise keep the form filled in so they can retry
+      fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } })
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if (res && res.success) { showSuccess(); return; }
+          console.error('Web3Forms rejected tryout registration:', res);
+          showError('Your registration did not go through' + (res && res.message ? ' (' + res.message + ')' : '') + '. Please wait a moment and tap Reserve Tryout Slot again, or email mundeleinboysbasketball@gmail.com.');
+        })
+        .catch(function(err){
+          console.error('Tryout registration failed:', err);
+          showError('We could not reach our registration server. Check your connection and tap Reserve Tryout Slot again, or email mundeleinboysbasketball@gmail.com.');
+        });
     });
 
     document.getElementById('tryout-another-btn').addEventListener('click', function(){
