@@ -729,7 +729,15 @@
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#21c46c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </div>
         <h3 style="font-weight:900; font-size:22px; text-transform:uppercase; letter-spacing:-0.01em; color:var(--mustang-charcoal-900); margin:0 0 10px;">You're registered!</h3>
-        <p style="font-weight:500; font-size:15px; color:var(--fg-2); line-height:1.55; margin:0 0 6px;">We received your tryout registration. Coach Gio will follow up by email with your confirmed date, time, and location.</p>
+        <p style="font-weight:500; font-size:15px; color:var(--fg-2); line-height:1.55; margin:0 0 6px;">We received your tryout registration<span id="tryout-success-name"></span>. Coach Gio will follow up by email with your confirmed date, time, and location.</p>
+        <ul id="tryout-registered-list" class="tryout-registered-list"></ul>
+        <div style="margin: 22px 0 18px; padding-top: 20px; border-top: 1px solid var(--border);">
+          <p style="font-weight:600; font-size:14px; color:var(--mustang-charcoal); line-height:1.5; margin:0 0 14px;">Have another child trying out? Your parent &amp; contact info will already be filled in.</p>
+          <button type="button" class="submit-btn" id="tryout-another-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+            Register Another Player
+          </button>
+        </div>
         <p style="font-weight:600; font-size:13px; color:var(--fg-3); margin:0;">Questions? Email <a href="mailto:mundeleinboysbasketball@gmail.com" style="color:var(--mustang-red);">mundeleinboysbasketball@gmail.com</a></p>
       </div>
 
@@ -1122,28 +1130,72 @@
   }
 </style>
 
+<style>
+  .tryout-registered-list { list-style: none; margin: 16px auto 0; padding: 0; max-width: 360px; display: flex; flex-direction: column; gap: 8px; text-align: left; }
+  .tryout-registered-list:empty { display: none; }
+  .tryout-registered-list li { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 14px; color: var(--mustang-charcoal); background: var(--mustang-gray-50); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }
+  .tryout-registered-list li::before { content: "\2713"; color: #21c46c; font-weight: 900; }
+  .tryout-registered-list li span { margin-left: auto; font-weight: 600; font-size: 12px; color: var(--fg-3); }
+</style>
 <script>
-  document.getElementById('registration-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var form = this;
+  (function(){
+    var form = document.getElementById('registration-form');
     var btn = document.getElementById('tryout-submit-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Submitting…';
+    var btnHTML = btn.innerHTML;
+    var success = document.getElementById('tryout-success');
+    var title = form.querySelector('.form-head .title');
+    var list = document.getElementById('tryout-registered-list');
+    var registered = [];
 
-    function showSuccess() {
-      form.style.display = 'none';
-      var success = document.getElementById('tryout-success');
-      success.style.display = 'block';
-      success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    // Player fields get cleared for the next child; parent/guardian info stays filled in
+    var playerFields = ['Camper First Name', 'Camper Last Name', 'Camper Grade', 'Camper Gender', 'Camper Birthday', 'Camper School', 'Camper Experience', 'Allergies/Medical Notes'];
 
-    var fd = new FormData(form);
-    fd.set('access_key', 'c88e0e7f-5a85-474e-b503-175ba4d9dbb3');
-    fd.set('subject', 'New Mustangs Tryout Registration');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Submitting…';
 
-    fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd })
-      .catch(function(){})
-      .finally(showSuccess);
-  });
+      var fd = new FormData(form);
+      var player = (fd.get('Camper First Name') + ' ' + fd.get('Camper Last Name')).trim();
+      fd.set('access_key', 'c88e0e7f-5a85-474e-b503-175ba4d9dbb3');
+      fd.set('subject', 'New Mustangs Tryout Registration — ' + player);
+
+      function showSuccess() {
+        registered.push({ name: player, grade: fd.get('Camper Grade') });
+        document.getElementById('tryout-success-name').textContent = ' for ' + player;
+        list.innerHTML = '';
+        if (registered.length > 1) {
+          registered.forEach(function(p){
+            var li = document.createElement('li');
+            li.textContent = p.name;
+            var g = document.createElement('span'); g.textContent = p.grade; li.appendChild(g);
+            list.appendChild(li);
+          });
+        }
+        btn.disabled = false;
+        btn.innerHTML = btnHTML;
+        form.style.display = 'none';
+        success.style.display = 'block';
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd })
+        .catch(function(){})
+        .finally(showSuccess);
+    });
+
+    document.getElementById('tryout-another-btn').addEventListener('click', function(){
+      playerFields.forEach(function(name){
+        var el = form.elements[name];
+        if (!el) return;
+        if (el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = '';
+      });
+      title.textContent = 'Tryout Registration — Player ' + (registered.length + 1);
+      success.style.display = 'none';
+      form.style.display = '';
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      form.elements['Camper First Name'].focus({ preventScroll: true });
+    });
+  })();
 </script>
 </body></html>
