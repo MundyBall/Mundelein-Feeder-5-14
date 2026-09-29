@@ -797,7 +797,7 @@
   /* ========== Responsive ========== */
   @media (max-width: 1024px) {
     .hero-inner { grid-template-columns: 1fr; gap: 48px; }
-    .hero-card { transform: none; max-width: 480px; }
+    .hero-card { transform: none; max-width: 480px; margin-left: 0 !important; } /* inline -40px nudge is for the desktop two-column layout; stacked it ran off the left edge */
     .differ { grid-template-columns: 1fr; gap: 40px; }
     .snapshot { grid-template-columns: 1fr 1fr; }
     .snap-cell:nth-child(2) { border-right: 0; }
@@ -1449,6 +1449,7 @@ BRING WATER, A SMILE, AND YOUR JUMP SHOT.</div>
     // ---------- Scroll-driven animation ----------
     let target = 0, smooth = 0;
     const LERP = 0.12;
+    const stackedHero = window.matchMedia('(max-width: 1024px)');
 
     function readTarget() {
       const vh = window.innerHeight || 800;
@@ -1612,11 +1613,19 @@ BRING WATER, A SMILE, AND YOUR JUMP SHOT.</div>
         beams[i].style.transform = `translateX(${tx}vw) rotate(${baseAng + sway}deg)`;
       }
 
-      // Slide hero card left and fade as user scrolls (starts at p=0.08, gone by p=0.38)
-      const cardSlide = Math.min(1, Math.max(0, (p - 0.08) / 0.30));
-      heroCard.style.transform = `translateX(${cardSlide * -130}%) rotateY(-4deg) rotateX(2deg)`;
-      heroCard.style.opacity = 1 - cardSlide;
-      heroCard.style.pointerEvents = cardSlide > 0.5 ? 'none' : '';
+      // Slide hero card left and fade as user scrolls (starts at p=0.08, gone by p=0.38).
+      // Desktop only: when the hero stacks (<=1024px) the card sits below the headline,
+      // so parents scroll *to* it — sliding it away then hid it before it could be read.
+      if (stackedHero.matches) {
+        heroCard.style.transform = '';
+        heroCard.style.opacity = '';
+        heroCard.style.pointerEvents = '';
+      } else {
+        const cardSlide = Math.min(1, Math.max(0, (p - 0.08) / 0.30));
+        heroCard.style.transform = `translateX(${cardSlide * -130}%) rotateY(-4deg) rotateX(2deg)`;
+        heroCard.style.opacity = 1 - cardSlide;
+        heroCard.style.pointerEvents = cardSlide > 0.5 ? 'none' : '';
+      }
 
       // Slight scene fade as user scrolls past hero so content sections breathe
       scene.style.opacity = Math.max(0.45, 1 - Math.max(0, p - 0.9) * 0.6);
@@ -1702,6 +1711,14 @@ BRING WATER, A SMILE, AND YOUR JUMP SHOT.</div>
 <style>
   @media (max-width: 480px) {
     .hero-card { width: 100% !important; max-width: 100% !important; }
+
+    /* Hero card stats ("4th – 8th", "2:1", "Up to 20") are nowrap at 26px inline, which
+       forced the card ~30px wider than the screen. Let the column shrink and size them down. */
+    .hero-inner { grid-template-columns: minmax(0, 1fr) !important; }
+    .hero-card { padding-left: 20px !important; padding-right: 20px !important; }
+    .hc-stats { gap: 6px !important; }
+    .hc-stat .num { font-size: 20px !important; }
+    .hc-stat .lbl { font-size: 9px !important; letter-spacing: 0.08em !important; }
   }
 </style>
 
