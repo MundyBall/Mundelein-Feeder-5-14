@@ -225,6 +225,10 @@
   .hero-inner > div:first-child { text-align: center; }
   .hero .eyebrow-tag, .hero .cta-row { justify-content: center; }
   .hero .lede, .hero .stat-strip { margin-left: auto; margin-right: auto; }
+  /* Keep "Jr. Mustangs Feeder" / "Basketball Camp" on two lines between tablet and laptop widths */
+  @media (min-width: 481px) and (max-width: 1179px) {
+    .hero h1, .hero h1 .red { font-size: 7.2vw !important; }
+  }
 
   /* Hero flyer card */
   .flyer-card { position: relative; transform: rotate(2deg); }
@@ -552,7 +556,7 @@
     <div >
       <div class="crumb" ><span class="live"></span>Summer 2027 · Interest Form Open</div>
       <div class="eyebrow-tag" >Building the Foundation for Future Mustangs</div>
-      <h1 style="font-size: 93px;">Jr. Mustangs<br><span class="red" style="font-size: 93px;">Feeder Basketball</span> Camp</h1>
+      <h1 style="font-size: 93px;">Jr. Mustangs <span class="red" style="font-size: 93px;">Feeder</span><br><span class="red" style="font-size: 93px;">Basketball</span> Camp</h1>
       <div class="tagline" >Learn<span class="sep"></span>Compete<span class="sep"></span>Develop</div>
       <p class="lede" >Five summer weeks with the same coaches &amp; players who run the Mundelein varsity program.</p>
       <div class="cta-row" >
