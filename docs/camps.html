@@ -201,7 +201,7 @@
       linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px),
       linear-gradient(0deg, rgba(255,255,255,0.6) 1px, transparent 1px);
     background-size: 80px 80px; mask-image: linear-gradient(180deg, #000, transparent 80%); }
-  .hero-inner { position: relative; max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items: center; }
+  .hero-inner { position: relative; max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 64px; align-items: center; } /* single column since the 2026 flyer was retired */
   .hero .crumb { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--mustang-lite-gray); margin-bottom: 22px; }
   .hero .crumb .live { width: 9px; height: 9px; border-radius: 50%; background: #21c46c; box-shadow: 0 0 0 0 rgba(33,196,108,.6); animation: pulse-g 1.8s var(--ease-out) infinite; }
   @keyframes pulse-g { 0% { box-shadow: 0 0 0 0 rgba(33,196,108,.6); } 70% { box-shadow: 0 0 0 10px rgba(33,196,108,0); } 100% { box-shadow: 0 0 0 0 rgba(33,196,108,0); } }
@@ -567,7 +567,7 @@
         </div>
         <div class="stat" >
           <div class="lab" >Length</div>
-          <div class="val" >3 hrs / day</div>
+          <div class="val" >≈3 hrs / day</div>
         </div>
         <div class="stat" >
           <div class="lab" >Weeks</div>
@@ -580,19 +580,6 @@
       </div>
     </div>
 
-    <div class="flyer-card" >
-      <div class="pin"></div>
-      <div class="badge" >
-        <div class="b-inner" >
-          <div class="top" >Open</div>
-          <div class="big" >'26</div>
-          <div class="sub" >Now Enrolling</div>
-        </div>
-      </div>
-      <div class="frame">
-        <img src="assets/camp-flyer.png" alt="Jr. Mustangs Feeder Basketball Camp 2026 official flyer" loading="eager">
-      </div>
-    </div>
   </div>
 </section>
 
@@ -686,7 +673,7 @@
 <section class="panel" >
   <div class="container" >
     <div class="eyebrow" ><span class="bar"></span>A Day at Camp</div>
-    <h2 class="section-title" >Three hours. <span style="color: var(--mustang-red); ">Five Days.</span></h2>
+    <h2 class="section-title" >A Camp Day <span style="color: var(--mustang-red); ">in a Nutshell</span></h2>
     <p class="section-lede" >Every day at Jr. Mustangs Feeder Camp is structured around a core basketball principle — Passing, Defense &amp; Rebounding, Shooting, Ball Handling, and Team Competition. Predictable structure, varied content, &amp; lots of repetitions.</p>
 
     <div class="day-flow" >
@@ -966,7 +953,6 @@
         Register a Camper
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
       </a>
-      <a class="btn btn-on-red-ghost" href="assets/camp-flyer.png" target="_blank" >Download the Flyer</a>
     </div>
   </div>
 </section>
