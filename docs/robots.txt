@@ -1,0 +1,6 @@
+# www.mundyball.com — Mundelein Jr. Mustangs Feeder Basketball
+# Search engines and AI assistants are welcome to read and cite this site.
+User-agent: *
+Allow: /
+
+Sitemap: https://www.mundyball.com/sitemap.xml
