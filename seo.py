@@ -59,8 +59,8 @@ PAGES = {
     ),
     "tryouts.html": dict(
         path="/tryouts", crumb="Tryouts", type="WebPage",
-        title="Jr. Mustangs Tryouts, Nov 16–25, 2026 | Mundelein Youth Basketball",
-        desc="Register free for Mundelein Jr. Mustangs basketball tryouts, November 16–25, 2026 at Mundelein High School. Boys and girls, grades 4–8. No fee to try out.",
+        title="Jr. Mustangs Tryouts Nov 14, 15 & 21, 2026 | Mundelein Basketball",
+        desc="Register free for Mundelein Jr. Mustangs basketball tryouts, November 14, 15 and 21, 2026 at Mundelein High School. Boys and girls, grades 4–8. No fee to try out.",
     ),
     "camps.html": dict(
         path="/camps", crumb="Camps", type="WebPage",
@@ -130,24 +130,31 @@ def faq(src):
     return {"@type": "FAQPage", "@id": SITE + "/tryouts#faq", "mainEntity": items} if items else None
 
 
-def tryout_event():
-    return {
-        "@type": "Event",
-        "@id": SITE + "/tryouts#event",
-        "name": "Mundelein Jr. Mustangs Basketball Tryouts 2026",
-        "description": "Tryouts for the 2026–27 Jr. Mustangs winter travel season. Boys and girls in grades 4–8. "
-                       "60-minute evaluation by the coaching staff; exact times per grade are emailed after registration.",
-        "startDate": "2026-11-16",
-        "endDate": "2026-11-25",
-        "eventStatus": "https://schema.org/EventScheduled",
-        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-        "location": {"@type": "Place", "name": "Mundelein High School", "address": MHS["address"]},
-        "image": OG_IMAGE,
-        "organizer": {"@id": SITE + "/#org"},
-        "isAccessibleForFree": True,
-        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD",
-                   "availability": "https://schema.org/InStock", "url": SITE + "/tryouts#register"},
-    }
+TRYOUT_DATES = ["2026-11-14", "2026-11-15", "2026-11-21"]  # update each season
+
+
+def tryout_events():
+    """One Event per tryout day, so search engines don't read it as a continuous week."""
+    events = []
+    for i, day in enumerate(TRYOUT_DATES, 1):
+        events.append({
+            "@type": "Event",
+            "@id": SITE + "/tryouts#tryout-day-%d" % i,
+            "name": "Mundelein Jr. Mustangs Basketball Tryouts, Day %d of %d" % (i, len(TRYOUT_DATES)),
+            "description": "Tryouts for the 2026–27 Jr. Mustangs winter travel season. Boys and girls in grades 4–8. "
+                           "60-minute evaluation by the coaching staff; each player's time is emailed after registration.",
+            "startDate": day,
+            "endDate": day,
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "location": {"@type": "Place", "name": "Mundelein High School", "address": MHS["address"]},
+            "image": OG_IMAGE,
+            "organizer": {"@id": SITE + "/#org"},
+            "isAccessibleForFree": True,
+            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD",
+                       "availability": "https://schema.org/InStock", "url": SITE + "/tryouts#register"},
+        })
+    return events
 
 
 def coaches():
@@ -182,7 +189,7 @@ def block(fname, meta, src):
         graph.append(crumbs)
         page["breadcrumb"] = {"@type": "BreadcrumbList", "itemListElement": crumbs["itemListElement"]}
     if fname == "tryouts.html":
-        graph.append(tryout_event())
+        graph.extend(tryout_events())
         f = faq(src)
         if f:
             graph.append(f)
