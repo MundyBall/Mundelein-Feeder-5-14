@@ -508,6 +508,8 @@
   .form-section .label .step { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--mustang-red); color: #fff; font-weight: 900; font-size: 11px; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
   .form-row.single { grid-template-columns: 1fr; }
+  .form-row.sizes { grid-template-columns: repeat(3, 1fr); margin-bottom: 6px; }
+  .sizes-hint { display: block; font-weight: 500; font-size: 11px; color: var(--fg-3); }
   .field { display: flex; flex-direction: column; gap: 6px; }
   .field label { font-weight: 700; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-2); }
   .field label .req { color: var(--mustang-red); }
@@ -994,6 +996,48 @@
               <span class="hint">No experience required. We mean it.</span>
             </div>
           </div>
+          <div class="form-row sizes">
+            <div class="field">
+              <label>T-Shirt Size <span class="req">*</span></label>
+              <select name="T-Shirt Size" required="">
+                <option value="">Select size…</option>
+                <option>Youth M</option>
+                <option>Youth L</option>
+                <option>Youth XL</option>
+                <option>Adult S</option>
+                <option>Adult M</option>
+                <option>Adult L</option>
+                <option>Adult XL</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Jersey Size <span class="req">*</span></label>
+              <select name="Jersey Size" required="">
+                <option value="">Select size…</option>
+                <option>Youth M</option>
+                <option>Youth L</option>
+                <option>Youth XL</option>
+                <option>Adult S</option>
+                <option>Adult M</option>
+                <option>Adult L</option>
+                <option>Adult XL</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Shorts Size <span class="req">*</span></label>
+              <select name="Shorts Size" required="">
+                <option value="">Select size…</option>
+                <option>Youth M</option>
+                <option>Youth L</option>
+                <option>Youth XL</option>
+                <option>Adult S</option>
+                <option>Adult M</option>
+                <option>Adult L</option>
+                <option>Adult XL</option>
+              </select>
+            </div>
+          </div>
+          <span class="hint sizes-hint">Uniform sizes are only used if your player makes a team. Between sizes? Size up.</span>
         </div>
 
         <div class="form-section">
@@ -1454,6 +1498,9 @@
     /* Quick Answers: long nowrap lines (tryout dates, TBD note) ran past the screen edge */
     .quick { grid-template-columns: minmax(0, 1fr) !important; }
     .quick-cell .val, .quick-cell .desc { white-space: normal !important; }
+
+    /* Uniform size dropdowns stack on phones */
+    .form-row.sizes { grid-template-columns: 1fr !important; }
   }
 </style>
 
@@ -1475,7 +1522,7 @@
     var registered = [];
 
     // Player fields get cleared for the next child; parent/guardian info stays filled in
-    var playerFields = ['Camper First Name', 'Camper Last Name', 'Camper Grade', 'Camper Gender', 'Camper Birthday', 'Camper School', 'Camper Experience', 'Allergies/Medical Notes'];
+    var playerFields = ['Camper First Name', 'Camper Last Name', 'Camper Grade', 'Camper Gender', 'Camper Birthday', 'Camper School', 'Camper Experience', 'T-Shirt Size', 'Jersey Size', 'Shorts Size', 'Allergies/Medical Notes'];
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
