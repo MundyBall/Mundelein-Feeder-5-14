@@ -974,8 +974,7 @@
 </span>
         </div>
         <h1 style="width: 900px; max-width: 100%;">
-          Mundelein Jr.<br>
-          <span class="accent">Mustangs</span><br>
+          Mundelein<br class="m-br"> <span class="jr-line">Jr.<br class="d-br"> <span class="accent">Mustangs</span></span><br>
           <span class="stroke">Feeder Basketball</span>
         </h1>
         <p class="sub">Building the future of Mundelein basketball — one rep, one practice, &amp; one player at a time.</p>
@@ -1667,7 +1666,7 @@ BRING WATER, A SMILE, AND YOUR JUMP SHOT.</div>
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
   </button>
   <nav class="mobile-nav" aria-label="Mobile">
-    <a href="/">Home</a>
+    <a href="/" aria-current="page">Home</a>
     <a href="/about">About</a>
     <a href="/tryouts">Tryouts</a>
     <a href="/camps">Camps</a>
@@ -1676,7 +1675,7 @@ BRING WATER, A SMILE, AND YOUR JUMP SHOT.</div>
     <a href="/coaches#join-the-staff">Employment</a>
       <a href="/assets/waiver.pdf" download>Waiver</a>
       <a href="/contact">Contact</a>
-    <a class="mm-cta" href="/camps#register">Register Now</a>
+    <a class="mm-cta" href="/tryouts#register">Register for Tryouts</a>
   </nav>
 </div>
 <style>
@@ -1690,6 +1689,14 @@ BRING WATER, A SMILE, AND YOUR JUMP SHOT.</div>
   .mobile-nav .mm-cta { background: var(--mustang-red, #CC2027); margin-top: 14px; font-size: 16px; letter-spacing: 0.16em; padding: 14px 18px; }
   .mobile-nav .mm-cta:hover, .mobile-nav .mm-cta:active { background: #a91a20; }
   body.menu-open { overflow: hidden; }
+  /* Scroll instead of cutting off Contact + Register on short phones; margin:auto keeps it centered when it fits */
+  .mobile-menu { align-items: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 72px 0 32px; }
+  .mobile-nav { margin: auto; }
+  .mobile-nav a[aria-current="page"] { color: var(--mustang-red, #CC2027); }
+  @media (max-height: 760px) {
+    .mobile-nav a { font-size: 18px; padding: 10px 10px; }
+    .mobile-nav .mm-cta { font-size: 14px; padding: 13px 18px; margin-top: 10px; }
+  }
 </style>
 <script>
   (function(){
@@ -1709,8 +1716,20 @@ BRING WATER, A SMILE, AND YOUR JUMP SHOT.</div>
 
 <!-- ============ Mobile-only overrides ============ -->
 <style>
+  /* Default (desktop): the mobile-only line break after "Mundelein" stays hidden */
+  .hero h1 .m-br { display: none; }
+
   @media (max-width: 480px) {
     .hero-card { width: 100% !important; max-width: 100% !important; }
+
+    /* User: remove the red header Register button on mobile (it was a bare dot and cut off the wordmark) */
+    .header-cta { display: none !important; }
+
+    /* User: keep "Jr. Mustangs" on one line — break after "Mundelein" instead of after "Jr." */
+    .hero h1 .m-br { display: inline !important; }
+    .hero h1 .d-br { display: none !important; }
+    .hero h1 .jr-line { white-space: nowrap; }
+    .hero h1 { font-size: clamp(34px, 11.2vw, 48px) !important; }
 
     /* Hero card stats ("4th – 8th", "2:1", "Up to 20") are nowrap at 26px inline, which
        forced the card ~30px wider than the screen. Let the column shrink and size them down. */

@@ -611,7 +611,7 @@
   </button>
   <nav class="mobile-nav" aria-label="Mobile">
     <a href="/">Home</a>
-    <a href="/about">About</a>
+    <a href="/about" aria-current="page">About</a>
     <a href="/tryouts">Tryouts</a>
     <a href="/camps">Camps</a>
     <a href="/codes">CODES</a>
@@ -619,7 +619,7 @@
     <a href="/coaches#join-the-staff">Employment</a>
       <a href="/assets/waiver.pdf" download>Waiver</a>
       <a href="/contact">Contact</a>
-    <a class="mm-cta" href="/camps#register">Register Now</a>
+    <a class="mm-cta" href="/tryouts#register">Register for Tryouts</a>
   </nav>
 </div>
 <style>
@@ -633,6 +633,14 @@
   .mobile-nav .mm-cta { background: var(--mustang-red, #CC2027); margin-top: 14px; font-size: 16px; letter-spacing: 0.16em; padding: 14px 18px; }
   .mobile-nav .mm-cta:hover, .mobile-nav .mm-cta:active { background: #a91a20; }
   body.menu-open { overflow: hidden; }
+  /* Scroll instead of cutting off Contact + Register on short phones; margin:auto keeps it centered when it fits */
+  .mobile-menu { align-items: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 72px 0 32px; }
+  .mobile-nav { margin: auto; }
+  .mobile-nav a[aria-current="page"] { color: var(--mustang-red, #CC2027); }
+  @media (max-height: 760px) {
+    .mobile-nav a { font-size: 18px; padding: 10px 10px; }
+    .mobile-nav .mm-cta { font-size: 14px; padding: 13px 18px; margin-top: 10px; }
+  }
 </style>
 <script>
   (function(){
