@@ -12,9 +12,9 @@
 
 // ===== Settings: change the tab names on the right to match your spreadsheet =====
 var TABS = {
-  tryouts:  'Tryouts',
-  camp:     'Camp Interest 2027',
-  contact:  'Contact Messages',
+  tryouts:  'tryout registration',
+  camp:     '2027 Camp Interest Form',
+  contact:  'MundyBall Contact Us Page',
   coaching: 'Coaching Applicants'
 };
 
@@ -88,9 +88,14 @@ function first_(v) { return Array.isArray(v) ? v[0] : (v || ''); }
 function norm_(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); }
 function reply_(msg) { return ContentService.createTextOutput(msg).setMimeType(ContentService.MimeType.TEXT); }
 
+// Finds the tab ignoring capitals and extra spaces; creates it only if nothing close exists.
 function sheet_(name) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  return ss.getSheetByName(name) || ss.insertSheet(name);
+  var exact = ss.getSheetByName(name);
+  if (exact) return exact;
+  var want = norm_(name);
+  var match = ss.getSheets().filter(function (s) { return norm_(s.getName()) === want; })[0];
+  return match || ss.insertSheet(name);
 }
 
 function headers_(sheet) {
